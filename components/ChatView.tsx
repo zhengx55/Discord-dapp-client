@@ -14,7 +14,7 @@ const ChatView = () => {
 
       return (
         index ===
-        state.messages.findIndex((obj) => {
+        state.messages.findIndex((obj: any) => {
           return JSON.stringify(obj) === _value;
         })
       );
@@ -22,19 +22,24 @@ const ChatView = () => {
 
     return uniqueArray;
   };
-  return ( 
+  return (
     <div className={styles.chatView}>
       <ChatHeader />
       <div className={styles.messagesContainer}>
-        {formattedMessagesArray().map((message, index) => (
-          <MessageCard
-            key={index}
-            avatar={message.avatar}
-            sender={message.sender}
-            timestamp={message.createdAt}
-            content={message.content}
-          />
-        ))}
+        {formattedMessagesArray().map(
+          (
+            message: { avatar: any; sender: any; createdAt: any; content: any },
+            index: any
+          ) => (
+            <MessageCard
+              key={index}
+              avatar={message.avatar}
+              sender={message.sender}
+              timestamp={message.createdAt}
+              content={message.content}
+            />
+          )
+        )}
       </div>
       <MessageForm />
     </div>
