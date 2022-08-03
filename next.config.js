@@ -5,6 +5,10 @@ const nextConfig = {
   images: {
     domains: ["encrypted-tbn0.gstatic.com", "cdn.sanity.io"],
   },
+  webpack: function (config, options) {
+    config.module.noParse = /gun\.js$/;
+    return config;
+  },
 };
 
 module.exports = nextConfig;
