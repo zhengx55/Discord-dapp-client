@@ -11,7 +11,7 @@ import ethLogo from "../assets/eth.png";
 import { useContext } from "react";
 import { DiscordContext } from "../context/context";
 
-const ChatHeader: React.FC = () => {
+const ChatHeader = () => {
   const { roomName, currentAccount, connectWallet } =
     useContext(DiscordContext);
   return (

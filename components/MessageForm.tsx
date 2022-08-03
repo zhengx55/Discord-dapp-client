@@ -8,7 +8,7 @@ import gift from "../assets/icons/gift.svg";
 import gif from "../assets/icons/gif.svg";
 import Image from "next/image";
 
-const MessageForm = () => {
+const MessageForm: React.FC = () => {
   const {
     messageText,
     setMessageText,

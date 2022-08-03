@@ -55,12 +55,29 @@ const DiscordProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    getCurrentUser();
+  }, [currentAccount]);
+
+  useEffect(() => {
     setRoomName(router.query.name as string);
     dispatch({ type: MessageStateKind.ADD, payload: {} });
     setPlaceholder(`Message ${router.query.name}`);
     setMessageText("");
     getMessages();
   }, [router.query]);
+
+  const getCurrentUser = async () => {
+    if (!currentAccount) return;
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/getCurrentUserData?account=${currentAccount}`
+      );
+      const data = await response.json();
+      setCurrentUser(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getMessages = () => {
     const _name = router.query.name as string;
@@ -81,17 +98,37 @@ const DiscordProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
     });
   };
 
-  const createUserAccount = async (account: string) => {
-    const data: { userAddress: string } = { userAddress: account };
+  const createUserAccount = async (userAddress = currentAccount) => {
     if (!window.ethereum) return;
+
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createUser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const data = {
+        userAddress: userAddress,
+      };
+
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createuser`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createdm`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      } catch (error) {
+        console.error(error);
+      }
     } catch (error) {
       console.error(error);
     }

@@ -21,6 +21,7 @@ const dummyChannels = [
 
 function Sidebar() {
   const router = useRouter();
+   
   const [channels, setChannels] = useState(dummyChannels);
   return (
     <div className={styles.wrapper}>
